@@ -4,12 +4,10 @@
 #include <lowlevelmonitorconfigurationapi.h>
 #include <string>
 #include <Tlhelp32.h>
-
 #include "resource.h"
 
 const BYTE VCP_OSD_LANGUAGE = 0xCC;
 const BYTE VCP_PICTURE_MODE = 0xDC;
-const BYTE VCP_AMA = 0xF0;
 
 enum
 {
@@ -21,11 +19,9 @@ enum
 
 DWORD CachedOsdLanguage = 2;
 DWORD CachedPictureMode = 0;
-DWORD CachedAma = 1;
 
 DWORD OorDelay = 2000;
 DWORD PicDelay = 500;
-DWORD AmaDelay = 250;
 DWORD WakeDelay = 3000;
 
 NOTIFYICONDATA TrayIcon;
@@ -33,7 +29,7 @@ HANDLE Monitor;
 
 int GetRefreshRate()
 {
-	DEVMODE dm;
+	DEVMODE dm{};
 	dm.dmSize = sizeof(DEVMODE);
 	EnumDisplaySettings(NULL, ENUM_CURRENT_SETTINGS, &dm);
 
@@ -63,26 +59,10 @@ void CacheVcpValues()
 {
 	GetVCPFeatureAndVCPFeatureReply(Monitor, VCP_OSD_LANGUAGE, NULL, &CachedOsdLanguage, NULL);
 	GetVCPFeatureAndVCPFeatureReply(Monitor, VCP_PICTURE_MODE, NULL, &CachedPictureMode, NULL);
-	GetVCPFeatureAndVCPFeatureReply(Monitor, VCP_AMA, NULL, &CachedAma, NULL);
-}
-
-void ReadLaunchParams()
-{
-	int argCount;
-	LPWSTR* args = CommandLineToArgvW(GetCommandLine(), &argCount);
-
-	if (args && argCount > 1)
-	{
-		OorDelay = (DWORD)wcstod(args[1], L'\0');
-		PicDelay = (DWORD)wcstod(args[2], L'\0');
-		AmaDelay = (DWORD)wcstod(args[3], L'\0');
-		WakeDelay = (DWORD)wcstod(args[4], L'\0');
-	}
 }
 
 inline void FixOor() {SetVCPFeature(Monitor, VCP_OSD_LANGUAGE, CachedOsdLanguage);}
 inline void FixPic() {SetVCPFeature(Monitor, VCP_PICTURE_MODE, CachedPictureMode);}
-inline void FixAma() {SetVCPFeature(Monitor, VCP_AMA, CachedAma);}
 
 void NextMode()
 {
@@ -110,7 +90,6 @@ void ApplyVcpValues(bool wake = false)
 
 	Sleep(OorDelay); FixOor();
 	Sleep(PicDelay); FixPic();
-	Sleep(AmaDelay); FixAma();
 }
 
 void ShowTrayMenu(HWND wnd)
@@ -252,7 +231,7 @@ void KillOtherInstances()
 
 	HANDLE snapshot = CreateToolhelp32Snapshot(TH32CS_SNAPALL, NULL);
 
-	PROCESSENTRY32 entry; 
+	PROCESSENTRY32 entry{}; 
 	entry.dwSize = sizeof(entry);
 
 	for (BOOL res = Process32First(snapshot, &entry); res; res = Process32Next(snapshot, &entry))
@@ -277,7 +256,6 @@ int WINAPI WinMain(_In_ HINSTANCE instance, _In_opt_ HINSTANCE, _In_ LPSTR, _In_
 	KillOtherInstances();
 	CachePhysicalMonitor();
 	CacheVcpValues();
-	ReadLaunchParams();
 
 	HWND wnd = CreateMainWindow(instance);
 	CreateTrayIcon(wnd, LoadIcon(instance, MAKEINTRESOURCE(IDI_ICON1)));
