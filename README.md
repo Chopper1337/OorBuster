@@ -13,6 +13,8 @@ From some testing, it seems to have been related to AMA, which is something I do
 
 I use this version of [OORB](https://github.com/Chopper1337/OorBuster/releases/tag/1.4.1) and [HotkeyResolutionChanger](https://funk.eu/hrc/) to switch between 1080p 144Hz and 960p 190Hz.
 
+Having a bind to switch to native resolution and refresh rate is a fail-safe in a way.
+
 ## Details
 Restores your current OSD language (fixes Out of Range error), picture mode (fixes black screen) and AMA setting after hitting over 144Hz on your BenQ 144Hz monitor. The OSD language and picture mode is cached upon launching the app, so if you switched your picture mode (e.g. from Standart to FPS1) and wish to use it, before switching to overclocked refresh rate right click the OOR Buster icon in tray and hit _Reload_.
 
@@ -22,6 +24,7 @@ Put the .exe into
 ```
 %ProgramData%\Microsoft\Windows\Start Menu\Programs\StartUp
 ```
+You can run `shell:startup` to get to this directory.
 
 ## Credits
 Blur Busters: https://blurbusters.com
