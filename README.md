@@ -1,11 +1,14 @@
+# Important note before going further
+Please don't use this build unless you are having issues with the original [https://github.com/hleVqq/OorBuster](OorBuster).
+
 # OOR Buster
 Fixes out of range error and black screen when overclocking BenQ 144Hz monitors
 
-## My Changes
+## Compared to the original
 * Removed launch parameters feature
 * Removed anything AMA related
 
-This version does not add anything to the original. I don't know if this will help other XL2411P owners but it worked for me :)
+**This version does not add anything to the original**. I don't know if this will help other XL2411P owners but it worked for me :)
 
 I had issues on my XL2411P with the latest release (1.4) of OOR Buster, it would dismiss the "Out of Range" error as expected but the screen would remain black.
 
