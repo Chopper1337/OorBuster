@@ -1,5 +1,5 @@
 # Important note before going further
-Please don't use this build unless you are having issues with the original [https://github.com/hleVqq/OorBuster](OorBuster).
+Please don't use this build unless you are having issues with the original [OorBuster](https://github.com/hleVqq/OorBuster).
 
 # OOR Buster
 Fixes out of range error and black screen when overclocking BenQ 144Hz monitors
